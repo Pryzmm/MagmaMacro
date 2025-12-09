@@ -1,0 +1,16 @@
+{
+  "1": {
+    "Name": "Test Macro",
+    "1": {
+      "action": "CHAT",
+      "value": "hello world!",
+      "delay": 0
+    },
+    "2": {
+      "action": "MOVEMENT",
+      "direction": "FORWARD",
+      "length": 10,
+      "delay": 20
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+
+  "key.category.magmamacro" : "Magma Macro",
+  "key.magmamacro.open_macro" : "Open Macro Menu",
+
+  "screen.magmamacro.close" : "Close",
+  "screen.magmamacro.your_macros" : "Your Macros",
+  "screen.magmamacro.editing_macro" : "Editing '%s' Macro",
+  "screen.magmamacro.action" : "Action:",
+  "screen.magmamacro.value" : "Value:",
+  "screen.magmamacro.direction" : "Direction:",
+  "screen.magmamacro.choose_bind" : "Press any button to bind this macro...",
+  "screen.magmamacro.choose_bind_delete" : "Press ESCAPE to unbind this macro",
+  "screen.magmamacro.input_value" : "Input a value into the box and press ENTER.",
+  "screen.magmamacro.input_number" : "Input a number into the box and press ENTER.",
+
+  "button.magmamacro.new_macro" : "New Macro",
+  "button.magmamacro.tooltip.create_macro" : "Create a new macro",
+  "button.magmamacro.tooltip.delay" : "Current Delay: %s ticks",
+  "button.magmamacro.tooltip.new_task" : "Create a new task",
+  "button.magmamacro.tooltip.rename_macro" : "Rename this macro",
+  "button.magmamacro.tooltip.bind_macro" : "Bind this macro to a button",
+  "button.magmamacro.tooltip.bound" : "Bind button: Bound to '%s'",
+  "button.magmamacro.tooltip.delete_macro" : "§cDelete this macro permanently",
+  "button.magmamacro.tooltip.delete_task" : "§cDelete this task permanently",
+
+  "option.magmamacro.command" : "Command",
+  "option.magmamacro.chat" : "Chat",
+  "option.magmamacro.movement" : "Movement",
+
+  "option.magmamacro.forwards" : "Forwards",
+  "option.magmamacro.backwards" : "Backwards",
+  "option.magmamacro.left" : "Left",
+  "option.magmamacro.right" : "Right"
+
+}
