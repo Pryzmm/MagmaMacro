@@ -23,6 +23,7 @@
   "button.magmamacro.tooltip.bound" : "Bind button: Bound to '%s'",
   "button.magmamacro.tooltip.delete_macro" : "§cDelete this macro permanently",
   "button.magmamacro.tooltip.delete_task" : "§cDelete this task permanently",
+  "button.magmamacro.tooltip.length" : "Movement Length: %s ticks",
 
   "option.magmamacro.command" : "Command",
   "option.magmamacro.chat" : "Chat",

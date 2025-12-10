@@ -51,6 +51,7 @@ public class TaskDisplay extends AbstractWidget {
 
     private TexturedButton delayButton;
     private TexturedButton deleteButton;
+    private TexturedButton lengthButton;
 
     private final EditBox inputBox = new EditBox(Minecraft.getInstance().font, 0, 0, 100, 20, Component.empty());
 
@@ -122,6 +123,22 @@ public class TaskDisplay extends AbstractWidget {
                 MacroCreation.openMacro(currentMacro);
             }
         );
+
+        lengthButton = new TexturedButton(
+            0, 0, 20, 20,
+            lengthTexture, 20, 20,
+            0, 0,
+            Tooltip.create(Component.translatable("button.magmamacro.tooltip.length", 0)),
+            button -> {
+                MacroScreen.lastFocusedTaskDisplay = this;
+                MacroScreen.inputtingLength = true;
+                if (MacroScreen.numberInputBox != null) {
+                    MacroScreen.numberInputBox.setFocused(true);
+                    MacroScreen.numberInputBox.setValue("");
+                }
+            }
+        );
+
         inputBox.visible = false;
         inputBox.active = false;
     }
@@ -261,6 +278,9 @@ public class TaskDisplay extends AbstractWidget {
                 inputBox.visible = true;
                 inputBox.render(guiGraphics, mouseX, mouseY, partialTick);
             } else {
+                lengthButton.setPosition(offsetX, this.getY() + 4);
+                lengthButton.render(guiGraphics, mouseX, mouseY, partialTick);
+
                 inputBox.visible = false;
                 inputBox.active = false;
             }
@@ -272,6 +292,8 @@ public class TaskDisplay extends AbstractWidget {
         if (currentMacro.actions.get(this.actionID) != null) {
             Integer delay = currentMacro.actions.get(this.actionID).delay();
             delayButton.setTooltip(Tooltip.create(Component.translatable("button.magmamacro.tooltip.delay", delay != null ? delay : 0)));
+            Integer length = currentMacro.actions.get(this.actionID).length();
+            lengthButton.setTooltip(Tooltip.create(Component.translatable("button.magmamacro.tooltip.length", length != null ? length : 0)));
         }
         delayButton.setPosition(this.getX() + this.getWidth() - 13, this.getY() + 1);
         delayButton.render(guiGraphics, mouseX, mouseY, partialTick);
@@ -295,6 +317,7 @@ public class TaskDisplay extends AbstractWidget {
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (delayButton.mouseClicked(mouseX, mouseY, button)) return true;
         if (deleteButton.mouseClicked(mouseX, mouseY, button)) return true;
+        if (lengthButton.mouseClicked(mouseX, mouseY, button)) return true;
 
         if (inputBox.visible) {
             if (inputBox.mouseClicked(mouseX, mouseY, button)) {

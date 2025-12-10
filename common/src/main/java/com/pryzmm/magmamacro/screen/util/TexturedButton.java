@@ -30,5 +30,6 @@ public class TexturedButton extends Button {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
         guiGraphics.blit(this.texture, this.getX(), this.getY(), this.u, this.v, this.width, this.height, this.textureWidth, this.textureHeight);
         if (this.isHovered()) guiGraphics.renderOutline(this.getX(), this.getY(), this.width, this.height, 0xFFFFFFFF);
+        if (this.isFocused()) guiGraphics.renderOutline(this.getX(), this.getY(), this.width, this.height, 0xFFFFFFFF);
     }
 }
