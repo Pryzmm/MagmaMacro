@@ -20,7 +20,7 @@ public class ScrollableList extends AbstractSelectionList<ScrollableList.Entry> 
     }
 
     @Override
-    protected int getScrollbarPosition() {
+    protected int scrollBarX() {
         return this.xPos + this.width - 6;
     }
 
@@ -69,7 +69,7 @@ public class ScrollableList extends AbstractSelectionList<ScrollableList.Entry> 
                 taskDisplay.render(graphics, mouseX, mouseY, partialTick);
             } else if (text != null) {
                 Minecraft minecraft = Minecraft.getInstance();
-                graphics.drawString(minecraft.font, text, x + (width / 4) + (minecraft.font.width(text) / 2) - 12, y, 0xFFFFFF);
+                graphics.drawString(minecraft.font, text, x + (width / 4) + (minecraft.font.width(text) / 2) - 12, y, 0xFFFFFFFF);
             }
         }
 

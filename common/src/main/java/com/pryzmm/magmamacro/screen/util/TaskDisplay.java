@@ -1,6 +1,5 @@
 package com.pryzmm.magmamacro.screen.util;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.pryzmm.magmamacro.Constants;
 import com.pryzmm.magmamacro.data.CachedMacros;
 import com.pryzmm.magmamacro.data.FileHandler;
@@ -67,6 +66,7 @@ public class TaskDisplay extends AbstractWidget {
         super(x, 0, width, height, Component.empty());
         currentMacro = macro;
         this.actionID = actionID;
+        inputBox.setMaxLength(255);
         DropdownEntry entry = addDropdown("screen.magmamacro.action", new Dropdown.DropdownOptions(List.of("option.magmamacro.command", "option.magmamacro.chat", "option.magmamacro.movement")));
         if (action != null && entry.dropdown.getOptions().values.contains("option.magmamacro." + action.toLowerCase())) {
             entry.dropdown.setSelectedKey("screen.magmamacro." + action.toLowerCase());
@@ -122,7 +122,6 @@ public class TaskDisplay extends AbstractWidget {
             }
         );
 
-        inputBox.setMaxLength(255);
         inputBox.visible = false;
         inputBox.active = false;
     }
@@ -238,9 +237,10 @@ public class TaskDisplay extends AbstractWidget {
     @Override
     public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         Minecraft minecraft = Minecraft.getInstance();
-        RenderSystem.enableBlend();
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
+
+        // For the semi-transparent background, the alpha is already in the color value (0x77000000)
         guiGraphics.fill(this.getX(), this.getY(), this.getX() + this.width, this.getY() + this.height, 0x77000000);
+
         int offsetX = this.getX() + 4;
         DropdownEntry actionEntry = null;
         for (DropdownEntry entry : dropdowns) {
@@ -255,6 +255,7 @@ public class TaskDisplay extends AbstractWidget {
             entry.dropdown.renderWidget(guiGraphics, mouseX, mouseY, this, suppressExpandedRendering);
             offsetX += entry.spacing;
         }
+
         if (actionEntry != null && (actionEntry.dropdown.getSelectedKey() != null)) {
             if (actionEntry.dropdown.getSelectedKey().contains(".command") || actionEntry.dropdown.getSelectedKey().contains(".chat")) {
                 inputBox.setPosition(actionEntry.dropdown.getX() + 90, this.getY() + 4);
