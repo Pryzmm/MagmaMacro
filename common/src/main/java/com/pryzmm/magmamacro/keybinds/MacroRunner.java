@@ -79,12 +79,12 @@ public class MacroRunner {
                 FileHandler.Macro macro = FileHandler.file.macros.get(macroID);
                 if (macro != null) {
                     Minecraft instance = Minecraft.getInstance();
-                    LocalPlayer player = instance.player;
-                    if (player != null) {
-                        int actionDelay = 0;
-                        for (FileHandler.MacroAction action : macro.actions.values()) {
-                            actionDelay += (action.delay() != null) ? action.delay() : 0;
-                            ClientScheduler.TaskHandle handle = CommonClass.CLIENT_SCHEDULER.runClientTaskLater(v -> {
+                    int actionDelay = 0;
+                    for (FileHandler.MacroAction action : macro.actions.values()) {
+                        actionDelay += (action.delay() != null) ? action.delay() : 0;
+                        ClientScheduler.TaskHandle handle = CommonClass.CLIENT_SCHEDULER.runClientTaskLater(v -> {
+                            LocalPlayer player = instance.player;
+                            if (instance.player != null) {
                                 switch (action.action()) {
                                     case "COMMAND" -> player.connection.sendCommand(action.value());
                                     case "CHAT" -> player.connection.sendChat(action.value());
@@ -96,10 +96,10 @@ public class MacroRunner {
                                         }
                                     }
                                 }
-                            }, actionDelay);
-                        }
-                    } else {
-                        Constants.LOG.warn("Player is null, cannot run macro actions.");
+                            } else {
+                                Constants.LOG.warn("Player is null, cannot run macro actions.");
+                            }
+                        }, actionDelay);
                     }
                 } else {
                     Constants.LOG.warn("Macro with ID: {} not found in file.", macroID);
