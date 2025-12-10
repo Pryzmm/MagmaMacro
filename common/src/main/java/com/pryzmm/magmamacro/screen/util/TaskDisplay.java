@@ -67,6 +67,7 @@ public class TaskDisplay extends AbstractWidget {
         super(x, 0, width, height, Component.empty());
         currentMacro = macro;
         this.actionID = actionID;
+        inputBox.setMaxLength(255);
         DropdownEntry entry = addDropdown("screen.magmamacro.action", new Dropdown.DropdownOptions(List.of("option.magmamacro.command", "option.magmamacro.chat", "option.magmamacro.movement")));
         if (action != null && entry.dropdown.getOptions().values.contains("option.magmamacro." + action.toLowerCase())) {
             entry.dropdown.setSelectedKey("screen.magmamacro." + action.toLowerCase());
@@ -121,8 +122,6 @@ public class TaskDisplay extends AbstractWidget {
                 MacroCreation.openMacro(currentMacro);
             }
         );
-
-        inputBox.setMaxLength(255);
         inputBox.visible = false;
         inputBox.active = false;
     }

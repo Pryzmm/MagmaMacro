@@ -181,7 +181,7 @@ public class MacroScreen extends Screen {
         this.addRenderableWidget(deleteMacroButton);
 
         inputBox = new EditBox(this.font, (this.width / 2) - 100, (this.height / 2) + 10, 200, 20, Component.empty());
-        inputBox.setMaxLength(32);
+        inputBox.setMaxLength(255);
 
         numberInputBox = new NumericEditBox(this.font, (this.width / 2) - 20, (this.height / 2) + 10, 40, 20, Component.empty());
         numberInputBox.setMaxLength(5);
