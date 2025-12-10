@@ -1,11 +1,11 @@
 package com.pryzmm.magmamacro.screen.util;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.pryzmm.magmamacro.Constants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
@@ -63,31 +63,28 @@ public class Dropdown extends AbstractWidget {
     }
 
     public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, TaskDisplay parent, boolean suppressExpanded) {
-        RenderSystem.enableBlend();
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
-
-        guiGraphics.blit(valueTexture, this.getX(), this.getY(), 0, 0, 60, 20, 100, 20);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, valueTexture, this.getX(), this.getY(), 0, 0, 60, 20, 100, 20);
 
         if (this.options.selectedIndex != null) {
             guiGraphics.drawString(Minecraft.getInstance().font, Component.translatable(this.options.values.get(this.options.selectedIndex)), this.getX() + 3, this.getY() + 6, 0xFFFFFFFF);
         }
 
         if (parent.isActiveDropdown(this)) {
-            guiGraphics.blit(closeDropdownTexture, this.getX() + 60, this.getY(), 0, 0, 20, 20, 20, 20);
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, closeDropdownTexture, this.getX() + 60, this.getY(), 0, 0, 20, 20, 20, 20);
             if (!suppressExpanded) {
                 int height = options.values.size() * 15;
-                guiGraphics.blit(backgroundTexture, this.getX(), this.getY() + 20, 0, 0, 80, height);
+                guiGraphics.blit(RenderPipelines.GUI_TEXTURED, backgroundTexture, this.getX(), this.getY() + 20, 0, 0, 80, height, 80, height);
                 guiGraphics.renderOutline(this.getX(), this.getY() + 20, 80, height, 0xFF000000);
                 int i = 0;
                 for (String value : options.values) {
                     guiGraphics.drawString(Minecraft.getInstance().font, Component.translatable(value), this.getX() + 3, this.getY() + 23 + (15 * i), 0xFFFFFFFF);
-                    guiGraphics.blit(selectTexture, this.getX() + 64, this.getY() + 21 + (15 * i), 0, 0, 12, 12, 12, 12);
+                    guiGraphics.blit(RenderPipelines.GUI_TEXTURED, selectTexture, this.getX() + 64, this.getY() + 21 + (15 * i), 0, 0, 12, 12, 12, 12);
                     if (mouseX >= this.getX() + 64 && mouseX < this.getX() + 76 && mouseY >= this.getY() + 21 + (15 * i) && mouseY < this.getY() + 33 + (15 * i))
                         guiGraphics.renderOutline(this.getX() + 64, this.getY() + 21 + (15 * i), 12, 12, 0xFFFFFFFF);
                     i++;
                 }
             }
-        } else guiGraphics.blit(openDropdownTexture, this.getX() + 60, this.getY(), 0, 0, 20, 20, 20, 20);
+        } else guiGraphics.blit(RenderPipelines.GUI_TEXTURED, openDropdownTexture, this.getX() + 60, this.getY(), 0, 0, 20, 20, 20, 20);
 
         if (mouseX >= this.getX() + 60 && mouseX < this.getX() + 80 && mouseY >= this.getY() && mouseY < this.getY() + 20)
             guiGraphics.renderOutline(this.getX() + 60, this.getY(), 20, 20, 0xFFFFFFFF);
@@ -95,30 +92,27 @@ public class Dropdown extends AbstractWidget {
 
 
     public void renderExpandedMenu(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        RenderSystem.enableBlend();
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0f);
+        guiGraphics.pose().pushMatrix();
+        guiGraphics.pose().translate(0.0f, 0.0f);
 
-        guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(0.0f, 0.0f, 200.0f);
-
-        guiGraphics.blit(valueTexture, this.getX(), this.getY(), 0, 0, 60, 20, 100, 20);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, valueTexture, this.getX(), this.getY(), 0, 0, 60, 20, 100, 20);
         if (this.options.selectedIndex != null) {
             guiGraphics.drawString(Minecraft.getInstance().font, Component.translatable(this.options.values.get(this.options.selectedIndex)), this.getX() + 3, this.getY() + 6, 0xFFFFFFFF);
         }
 
-        guiGraphics.blit(closeDropdownTexture, this.getX() + 60, this.getY(), 0, 0, 20, 20, 20, 20);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, closeDropdownTexture, this.getX() + 60, this.getY(), 0, 0, 20, 20, 20, 20);
         if (mouseX >= this.getX() + 60 && mouseX < this.getX() + 80 && mouseY >= this.getY() && mouseY < this.getY() + 20) {
             guiGraphics.renderOutline(this.getX() + 60, this.getY(), 20, 20, 0xFFFFFFFF);
         }
 
         int height = (options.values.size() * 15) + 1;
-        guiGraphics.blit(backgroundTexture, this.getX(), this.getY() + 19, 0, 0, 80, height);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, backgroundTexture, this.getX(), this.getY() + 19, 0, 0, 80, height, 80, height);
         guiGraphics.renderOutline(this.getX(), this.getY() + 19, 80, height, 0xFF000000);
 
         int i = 0;
         for (String value : options.values) {
             guiGraphics.drawString(Minecraft.getInstance().font, Component.translatable(value), this.getX() + 3, this.getY() + 23 + (15 * i), 0xFFFFFFFF);
-            guiGraphics.blit(selectTexture, this.getX() + 64, this.getY() + 21 + (15 * i), 0, 0, 12, 12, 12, 12);
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, selectTexture, this.getX() + 64, this.getY() + 21 + (15 * i), 0, 0, 12, 12, 12, 12);
 
             if (mouseX >= this.getX() + 64 && mouseX < this.getX() + 76 && mouseY >= this.getY() + 21 + (15 * i) && mouseY < this.getY() + 33 + (15 * i)) {
                 guiGraphics.renderOutline(this.getX() + 64, this.getY() + 21 + (15 * i), 12, 12, 0xFFFFFFFF);
@@ -127,7 +121,7 @@ public class Dropdown extends AbstractWidget {
             i++;
         }
 
-        guiGraphics.pose().popPose();
+        guiGraphics.pose().popMatrix();
     }
 
     @Override
