@@ -31,6 +31,7 @@ public class MacroScreen extends Screen {
     public static boolean choosingKeybind = false;
     public static boolean inputtingName = false;
     public static boolean inputtingDelay = false;
+    public static boolean inputtingLength = false;
     public static TaskDisplay lastFocusedTaskDisplay = null;
 
     private static final ResourceLocation newMacroTexture = ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "textures/macro/new_macro.png");
@@ -234,6 +235,23 @@ public class MacroScreen extends Screen {
                 return numberInputBox.keyPressed(keyCode, scanCode, modifiers);
             }
         }
+        if (inputtingLength) {
+            if (InputConstants.getKey(keyCode, scanCode).getValue() == InputConstants.KEY_ESCAPE) {
+                inputtingLength = false;
+                numberInputBox.setFocused(false);
+                return true;
+            }
+            if (InputConstants.getKey(keyCode, scanCode).getValue() == InputConstants.KEY_RETURN) {
+                selectedMacro.actions.get(lastFocusedTaskDisplay.getCurrentActionID()).length(Integer.valueOf(numberInputBox.getValue()));
+                inputtingLength = false;
+                numberInputBox.setFocused(false);
+                FileHandler.updateMacroInFile(selectedMacro);
+                return true;
+            }
+            if (numberInputBox != null) {
+                return numberInputBox.keyPressed(keyCode, scanCode, modifiers);
+            }
+        }
 
         TaskDisplay focused = TaskDisplay.getFocusedTaskDisplay();
         if (focused != null && focused.keyPressed(keyCode, scanCode, modifiers)) return true;
@@ -245,8 +263,9 @@ public class MacroScreen extends Screen {
     public boolean charTyped(char codePoint, int modifiers) {
         if (inputtingName && inputBox != null) return inputBox.charTyped(codePoint, modifiers);
         if (inputtingDelay && numberInputBox != null) return numberInputBox.charTyped(codePoint, modifiers);
+        if (inputtingLength && numberInputBox != null) return numberInputBox.charTyped(codePoint, modifiers);
 
-        if (!choosingKeybind && !inputtingName && !inputtingDelay) {
+        if (!choosingKeybind && !inputtingName && !inputtingDelay && !inputtingLength) {
             TaskDisplay focused = TaskDisplay.getFocusedTaskDisplay();
             if (focused != null && focused.charTyped(codePoint, modifiers)) return true;
         }
@@ -259,12 +278,13 @@ public class MacroScreen extends Screen {
         if (choosingKeybind) return true;
         if (inputtingName && inputBox != null) return inputBox.mouseClicked(mouseX, mouseY, button);
         if (inputtingDelay && numberInputBox != null) return numberInputBox.mouseClicked(mouseX, mouseY, button);
+        if (inputtingLength && numberInputBox != null) return numberInputBox.mouseClicked(mouseX, mouseY, button);
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
     @Override
     public void mouseMoved(double mouseX, double mouseY) {
-        if (choosingKeybind || inputtingName || inputtingDelay) return;
+        if (choosingKeybind || inputtingName || inputtingDelay || inputtingLength) return;
         super.mouseMoved(mouseX, mouseY);
     }
 
@@ -285,7 +305,7 @@ public class MacroScreen extends Screen {
 
         renderAnimatedBackground(guiGraphics);
 
-        if (choosingKeybind || inputtingName || inputtingDelay) super.render(guiGraphics, -1, -1, partialTick);
+        if (choosingKeybind || inputtingName || inputtingDelay || inputtingLength) super.render(guiGraphics, -1, -1, partialTick);
         else super.render(guiGraphics, mouseX, mouseY, partialTick);
 
         if (minecraft != null && minecraft.screen != null) {
@@ -303,7 +323,7 @@ public class MacroScreen extends Screen {
                 inputBox.render(guiGraphics, mouseX, mouseY, partialTick);
                 guiGraphics.pose().popMatrix();
             }
-            else if (inputtingDelay && inputBox != null) {
+            else if ((inputtingDelay || inputtingLength) && inputBox != null) {
                 guiGraphics.pose().pushMatrix();
                 guiGraphics.fill(0, 0, minecraft.screen.width, minecraft.screen.height, 0xDD000000);
                 guiGraphics.drawString(minecraft.font, Component.translatable("screen.magmamacro.input_number"), (minecraft.screen.width / 2) - (minecraft.font.width(Component.translatable("screen.magmamacro.input_number").getString()) / 2), (minecraft.screen.height / 2) - 5, 0xFFFFFFFF);

@@ -28,5 +28,6 @@ public class TexturedButton extends Button {
     public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, this.texture, this.getX(), this.getY(), this.u, this.v, this.width, this.height, this.textureWidth, this.textureHeight);
         if (this.isHovered()) guiGraphics.renderOutline(this.getX(), this.getY(), this.width, this.height, 0xFFFFFFFF);
+        if (this.isFocused()) guiGraphics.renderOutline(this.getX(), this.getY(), this.width, this.height, 0xFFFFFFFF);
     }
 }
